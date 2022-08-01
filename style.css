@@ -1,0 +1,70 @@
+:root{
+    --main: #2B7A0B;
+    --second: #5BB318;
+    --third: #7DCE13;
+    --contrast: #EAE509;
+    --road: #858585;
+    --river: #5ec7e7;
+}
+
+body {
+    overflow: hidden;
+    min-width: 98vw;
+    min-height: 99vh;
+    color: var(--contrast);
+    background-color: var(--main);
+    display: grid;
+    place-items: center;
+    margin: 0;
+}
+/* 
+header {
+    color: var(--contrast);
+    font-size: 1.25em;
+} */
+
+main {
+    overflow: hidden;
+    width: 100vw;
+    height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.grass {
+    width: 100vw;
+    height: 8vh;
+    background-color: var(--third);
+    border-style: solid;
+    border-color: var(--main);
+    border-width: .25em 0;
+}
+
+.road {
+    width: 100vw;
+    height: 8vh;
+    background-color: var(--road);
+    border-style: solid;
+    border-color: var(--main);
+    border-width: .25em 0;
+}
+
+.river {
+    width: 100vw;
+    height: 8vh;
+    background-color: var(--river);
+    border-style: solid;
+    border-color: var(--main);
+    border-width: .25em 0;
+}
+
+
+.frog {
+    aspect-ratio: 1/1;
+    height: 6vh;
+    background-color: var(--third);
+    border-radius: 1em;
+    border-style: none;
+    position: relative;
+    padding: .5em;
+}
