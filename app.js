@@ -1,5 +1,5 @@
-const content = document.querySelector("main"),
-    rows = []
+const content = document.getElementsByClassName("content"),
+        rows = []
 
 let row, random_row, frog_pos = 9, frog
 

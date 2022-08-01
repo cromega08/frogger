@@ -17,13 +17,8 @@ body {
     place-items: center;
     margin: 0;
 }
-/* 
-header {
-    color: var(--contrast);
-    font-size: 1.25em;
-} */
 
-main {
+.content {
     overflow: hidden;
     width: 100vw;
     height: 85vh;
