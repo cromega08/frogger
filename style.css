@@ -5,6 +5,8 @@
     --contrast: #EAE509;
     --road: #858585;
     --river: #5ec7e7;
+    --float: #0b0bd3;
+    --enemy: #ca3305;
 }
 
 body {
@@ -24,6 +26,7 @@ body {
     height: 85vh;
     display: flex;
     flex-direction: column;
+    margin: 0;
 }
 
 .grass {
@@ -60,6 +63,38 @@ body {
     background-color: var(--third);
     border-radius: 1em;
     border-style: none;
+    position: absolute;
+    padding: .5em;
+}
+
+.float {
+    aspect-ratio: 1/1;
+    height: 6vh;
+    background-color: var(--float);
+    border-radius: 1em;
+    border-style: none;
+    position: absolute;
+    padding: .5em;
+}
+
+/* Fix this class, height and width are inverted IDEA: Its because you rotate the element */
+.float_large {
+    height: 12vh;
+    width: 8vh;
+    background-color: var(--float);
+    border-radius: 1em;
+    border-style: none;
+    position: absolute;
+    padding: 0;
+}
+
+.enemy {
+    aspect-ratio: 1/1;
+    height: 6vh;
+    background-color: var(--enemy);
+    border-radius: 1em;
+    border-style: none;
     position: relative;
     padding: .5em;
+    margin: 0;
 }
