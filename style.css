@@ -31,12 +31,38 @@ aside {
     border-radius: 1em;
     box-shadow: 0 .2em .5em var(--third);
     font-size: 2em;
+    text-align: center;
     padding: .5em 1em;
-    display: none;
+    display: grid;
     place-content: center;
     position: absolute;
     top: 35vh;
     left: 35vw;
+}
+
+button {
+    aspect-ratio: 2/1;
+    width: 30vw;
+    color: var(--contrast);
+    background-color: var(--main);
+    border-style: solid;
+    border-color: var(--contrast);
+    border-radius: 1em;
+    border-width: .5em;
+    font-size: 2em;
+    position: absolute;
+    top: 35vh;
+    left: 35vw;
+}
+
+button:hover {
+    transition: all;
+    transition-duration: 500ms;
+    width: 32vw;
+    background-color: var(--second);
+    box-shadow: 0 0 .5em .25em var(--third);
+    top: 34.5vh;
+    left: 34vw;
 }
 
 .content {
@@ -75,7 +101,6 @@ aside {
     border-width: .25em 0;
 }
 
-
 .frog {
     aspect-ratio: 1/1;
     height: 6vh;
@@ -94,6 +119,7 @@ aside {
     border-style: none;
     position: absolute;
     padding: .5em;
+    margin: 0;
 }
 
 .float_large {

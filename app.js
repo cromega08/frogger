@@ -1,18 +1,13 @@
 const content = document.getElementsByClassName("content").item(0),
         rows = [],
         elements_timers =[],
-		page_width = window.innerWidth,
-		page_height = window.innerHeight
+		page_width = window.innerWidth
 
-let row, frog, frog_row = 9, frog_left_pos = 46.15, water = false
-
-create_map()
-
-// TODO: Collisions with cars, make the system to move the frog when floating
-// TODO: And set the check system to know if the frog it;s on water or not
-// * The last system could check other collitions or something, to make it all in one
+let row, frog, frog_row = 9, frog_left_pos = 46.15, water = false, points = -1
 
 function create_map() {
+    clear_all()
+    ++points
     let random_row
     for (let index = 0; index < 10; ++index) {
         row = document.createElement("div")
@@ -34,17 +29,22 @@ function create_map() {
                 case 0:
                     row.setAttribute("class", "road")
                     create_enemy(row, index)
+                    create_enemy(row, index)
                     break
                 case 1:
                     row.setAttribute("class", "river")
                     create_floating(row, index)
+                    create_floating(row, index)
+                    create_floating(row, index)
                     break
                 default: console.log(`Error setting the row\nrandom_row: ${random_row}`); break
-               }
+            }
         }
         content.append(row)
         rows.push(row)
     }
+    drown_timer = setInterval(drown, 30)
+    elements_timers.push(drown_timer)
 }
 
 function move_frog(e) {
@@ -75,7 +75,7 @@ function move_frog(e) {
                 break
             default: console.log(`Error moving the frog\ne.key: ${e.key}`); break
         }
-        if (frog_row === 0) {frog_row = 9; clear_all(); create_map()};
+        if (frog_row === 0) {frog_row = 9; create_map()};
     }
 }
 
@@ -83,9 +83,9 @@ function create_enemy(row, row_num) {
     let time, enemy = document.createElement("img"),
         type_enemy = Math.floor(Math.random() * 4),
         random_pos = Math.floor(Math.random() * 100),
-        random_dir = Math.floor(Math.random() * 2)
+        random_dir = Math.floor(Math.random() * 2),
+        other = row.lastElementChild
 
-    enemy.setAttribute("class", "enemy")
     enemy.style.left = `${random_pos}vw`
 
     switch (type_enemy) {
@@ -97,12 +97,20 @@ function create_enemy(row, row_num) {
             enemy.setAttribute("src", "/imgs/school-bus.png")
             enemy.setAttribute("class", "enemy_bus")
             time = 30; break
-        case 2: enemy.setAttribute("src", "/imgs/sedan.png"); time = 15; break
-        case 3: enemy.setAttribute("src", "/imgs/sport-car.png"); time = 10; break
+        case 2:
+            enemy.setAttribute("src", "/imgs/sedan.png")
+            enemy.setAttribute("class", "enemy")
+            time = 15; break
+        case 3:
+            enemy.setAttribute("src", "/imgs/sport-car.png")
+            enemy.setAttribute("class", "enemy")
+            time = 10; break
         default: console.log("Error while creating enemy")
     }
 
-    direction = random_dir === 0? "left":"right"
+    direction = other !== null? other.getAttribute("direction"):
+                random_dir === 0? "left":"right"
+    enemy.setAttribute("direction", direction)
     if (direction === "left") enemy.style.transform = "scaleX(-1)"
     enemy_timer = setInterval(move_enemy, time, enemy, direction, row_num)
     elements_timers.push(enemy_timer)
@@ -129,29 +137,48 @@ function move_enemy(element, direction, row_num) {
 
 function create_floating(row, row_num) {
     let time, float = document.createElement("img"),
-        type_float = Math.floor(Math.random() * 5),
-        random_pos = Math.floor(Math.random() * 100),
-        random_dir = Math.floor(Math.random() * 2)
+        random_dir = Math.floor(Math.random() * 2),
+        other = row.lastElementChild,
+        type_float = other !== null? -1:Math.floor(Math.random() * 5),
+        random_pos = Math.floor(Math.random() * 100)
 
-    float.setAttribute("class", "float")
     float.style.left = `${random_pos}vw`
 
     switch (type_float) {
-        case 0: float.setAttribute("src", "/imgs/float.png"); time = 27.5; break
+        case 0:
+            float.setAttribute("src", "/imgs/float.png")
+            float.setAttribute("class", "float")
+            time = 25; float.setAttribute("speed", time)
+            break
         case 1:
             float.setAttribute("src", "/imgs/water.png")
             float.setAttribute("class", "float_large")
-            time = 30; break
-        case 2: float.setAttribute("src", "/imgs/wood-board.png"); time = 25; break
+            time = 27.5; float.setAttribute("speed", time)
+            break
+        case 2:
+            float.setAttribute("src", "/imgs/wood-board.png")
+            float.setAttribute("class", "float")
+            time = 22.5; float.setAttribute("speed", time)
+            break
         case 3:
             float.setAttribute("src", "/imgs/wood.png")
             float.setAttribute("class", "float_wood")
-            time = 22.5; break
-        case 4: float.setAttribute("src", "/imgs/trunk.png"); time = 20; break
-
-        default: console.log("Error creating floating elements");
+            time = 20; float.setAttribute("speed", time)
+            break
+        case 4:
+            float.setAttribute("src", "/imgs/trunk.png")
+            float.setAttribute("class", "float")
+            time = 17.5; float.setAttribute("speed", time)
+            break
+        default:
+            float.setAttribute("src", other.getAttribute("src"))
+            float.setAttribute("class", other.classList[0])
+            time = other.getAttribute("speed"); float.setAttribute("speed", time)
+            break
     }
-    direction = random_dir === 0? "left":"right"
+    direction = other !== null? other.getAttribute("direction"):
+                random_dir === 0? "left":"right"
+    float.setAttribute("direction", direction)
     if (direction === "left") float.style.transform = "scaleX(-1)"
     float_timer = setInterval(move_floating, time, float, direction, row_num);
     elements_timers.push(float_timer)
@@ -160,10 +187,11 @@ function create_floating(row, row_num) {
 
 function move_floating(element, direction, row_num) {
     const pos = +element.style.left.slice(0, -2)
-        float = element.getBoundingClientRect()
-                validations = [row_num === frog_row,
-                    frog_left_pos + 5 > float.left/page_width * 100,
-                    frog_left_pos + 1 < float.right/page_width * 100].every(element => element === true)
+            float = element.getBoundingClientRect()
+            validations = [row_num === frog_row,
+                frog_left_pos + 5 > float.left/page_width * 100,
+                frog_left_pos + 1 < float.right/page_width * 100,
+                frog_left_pos > -2 && frog_left_pos < 95].every(element => element === true)
     if (direction === "right") {
         pos >= 100?
             element.style.left = "-5vw":
@@ -177,16 +205,39 @@ function move_floating(element, direction, row_num) {
     if (validations) frog.style.left = `${frog_left_pos -= 0.5}vw`
 }
 
+function drown() {
+    if (rows[frog_row].classList[0] === "river") {
+        let floats = rows[frog_row].childNodes, drowned =  true
+        for (const key in floats) {
+            if (Object.hasOwnProperty.call(floats, key)) {
+                const float = floats[key]
+                if (float.classList[0] === "frog") break
+                const float_pos = float.getBoundingClientRect(),
+                    position = {
+                        left: Math.floor(float_pos.left/page_width*100),
+                        right: Math.floor(float_pos.right/page_width*100)
+                    },
+                    validation = [
+                        frog_left_pos + 5 > position.left,
+                        frog_left_pos + 1 < position.right
+                    ].every(element => element === true)
+                if (validation) {drowned = false; break}
+            }
+        }
+        if (drowned) endgame()
+    }
+}
+
 function clear_all() {
     clear_elements()
     clear_map()
 }
 
 function clear_map() {
-    let children = content.lastElementChild;
+    let children = content.lastElementChild
     do {
         content.removeChild(children)
-        children = content.lastElementChild;
+        children = content.lastElementChild
     } while (children); rows.splice(0, rows.length)
 }
 
@@ -199,7 +250,6 @@ function clear_elements() {
 function endgame() {
     let panel = document.createElement("aside")
     clear_all()
-    panel.innerText = "You Die"
-    panel.style.display = "grid"
+    panel.innerText = `Stage Cleared: ${points}`
     content.append(panel)
 }
