@@ -20,6 +20,25 @@ body {
     margin: 0;
 }
 
+aside {
+    aspect-ratio: 1/1;
+    width: 20vh;
+    color: var(--main);
+    background-color: var(--contrast);
+    border-style: solid;
+    border-width: .5em;
+    border-color: var(--second);
+    border-radius: 1em;
+    box-shadow: 0 .2em .5em var(--third);
+    font-size: 2em;
+    padding: .5em 1em;
+    display: none;
+    place-content: center;
+    position: absolute;
+    top: 35vh;
+    left: 35vw;
+}
+
 .content {
     overflow: hidden;
     width: 100vw;
@@ -77,24 +96,48 @@ body {
     padding: .5em;
 }
 
-/* Fix this class, height and width are inverted IDEA: Its because you rotate the element */
 .float_large {
-    height: 12vh;
-    width: 8vh;
+    height: 10vh;
+    width: 8.1vh;
+    background-color: var(--float);
+    border-radius: 1em;
+    border-style: none;
+    position: relative;
+    bottom: 1.05em;
+    padding: .5em 0;
+    margin: 0;
+    rotate: 90deg;
+}
+
+.float_wood {
+    height: 7.6vh;
+    width: 10vh;
     background-color: var(--float);
     border-radius: 1em;
     border-style: none;
     position: absolute;
-    padding: 0;
+    padding: 0 .5em;
+    margin: 0;
 }
 
 .enemy {
     aspect-ratio: 1/1;
-    height: 6vh;
+    height: 7.5vh;
+    background-color: var(--enemy);
+    border-radius: 1em;
+    border-style: none;
+    position: absolute;
+    padding: 0 .5em;
+    margin: 0;
+}
+
+.enemy_bus {
+    height: 8vh;
+    width: 10vh;
     background-color: var(--enemy);
     border-radius: 1em;
     border-style: none;
     position: relative;
-    padding: .5em;
+    padding: 0 .5em;
     margin: 0;
 }
