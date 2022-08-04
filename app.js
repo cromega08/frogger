@@ -17,7 +17,7 @@ function create_map() {
         else if (index === 9) {
             row.setAttribute("class", "grass")
             frog = document.createElement("img")
-            frog.setAttribute("src", "/imgs/frog (1).png")
+            frog.setAttribute("src", "/imgs/frog.png")
             frog.setAttribute("class", "frog")
             frog.style.left = `${frog_left_pos}vw`
             document.addEventListener("keydown", move_frog)
